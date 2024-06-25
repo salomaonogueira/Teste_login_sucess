@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "411f3517-9b59-4e21-88cd-46765d91a202",
+		"name": "2_login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34625845"
+	},
+	"item": [
+		{
+			"name": "Login sucess",
+			"item": [
+				{
+					"name": "signup - sucess",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function firstName () {\r",
+									"    let firstName = [\"Salomão\", \"Jessica\", \"Lilia\", \"Roberta\", \"Taina\", \"Wagner\", \"Marcelo\", \"Renato\", \"Eronilson\", \"Geisy\", \"Felipe\", \"Ivan\", \"João\", \"Pedro\", \"Romero\", \"Cassio\", \"Emerson\", \"Guerrero\"];\r",
+									"\r",
+									"    let randomItem = firstName[Math.floor(Math.random() * firstName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"firstName\", firstName());\r",
+									"\r",
+									"\r",
+									"function lastName () {\r",
+									"    let lastName = [\"Almeida\", \"Nogueira\", \"Freitas\", \"Marinho\", \"Souza\", \"Sousa\", \"Silva\", \"Santos\", \"Carvalho\", \"Almeida Nogueira\", \"Marinho de Freitas\", \"Silva Santos\", \"Silva dos Santos\", \"Ramos\", \"Ramos da Silva\", \"Ribeiro\", \"Bitencourt\", \"Mercury\", \"de Souza\", \"da Silva\", \"de Freitas\", \"dos Santos\", \"de Carvalho\"];\r",
+									"\r",
+									"    let randomItem = lastName[Math.floor(Math.random() * lastName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"lastName\", lastName());\r",
+									"\r",
+									"pm.environment.set(\"fullName\", pm.environment.get(\"firstName\") + \" \" + pm.environment.get(\"lastName\"));\r",
+									"\r",
+									"\r",
+									"\r",
+									"function accessProfile () {\r",
+									"    let accessProfile = [\"ADMIN\", \"FINANCEIRO\", \"ADMINISTRATIVO\", \"RH\", \"GERENCIA\", \"RECEBIMENTO\", \"TI\", \"INFRA\", \"DESENVOLVIMENTO\", \"QA\", \"CONTROLADORIA\"];\r",
+									"\r",
+									"    let randomItem = accessProfile[Math.floor(Math.random() * accessProfile.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"accessProfile\", accessProfile());\r",
+									"\r",
+									"\r",
+									"\r",
+									"function providerMail () {\r",
+									"    let providerMail = [\"@outlook.com\", \"@gmail.com\", \"@yahoo.com.br\", \"@uol.com.br\", \"@hotmail.com\",];\r",
+									"\r",
+									"    let randomItem = providerMail[Math.floor(Math.random() * providerMail.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"ProviderMail\", providerMail());\r",
+									"\r",
+									"pm.environment.set(\"mail\", pm.environment.get(\"firstName\") + \"_\" + pm.variables.replaceIn('{{$guid}}') + pm.environment.get(\"ProviderMail\"))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is token exist\", function () {\r",
+									"     pm.expect(JSON.parse(responseBody).token).to.exist;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check is fullName true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"fullName\")).to.eql(JSON.parse(responseBody).user.fullName);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is mail true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"mail\")).to.eql(JSON.parse(responseBody).user.mail);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is accessProfile true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"accessProfilemail\")).to.eql(JSON.parse(responseBody).user.accessProfilemail);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is status true\", function () {\r",
+									"    pm.expect(true).to.eql(JSON.parse(responseBody).user.status);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Njc5YmJjNDQ0MjE0NmYzYTFhMjI4MzgiLCJyZWdpc3RyYXRpb24iOiJRYUNvZGVycy0wMDAyNTY1MiIsImZ1bGxOYW1lIjoiSmVzc2ljYSBTb3V6YSIsIm1haWwiOiJKZXNzaWNhXzRlOGU4NGY2LTdjMTYtNDA3Ny04YzM2LWNhYjg2ZjNhOWE2ZUBob3RtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJDNZZnBSM1NUaFMzNUFoeWR3T3VsZ2VTR2J2THZWdUl4WkkvTHJBYWtrYmk1cHFuVjRMdjk2IiwiYWNjZXNzUHJvZmlsZSI6IkFETUlOIiwiaWRDb21wYW55IjoiIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0cmF0aW9uRGF0ZSI6Ik1vbiBKdW4gMjQgMjAyNCAxNTozMjozNiBHTVQtMDMwMCAoQnJhc2lsaWEgU3RhbmRhcmQgVGltZSkiLCJfaWQiOiI2Njc5YmJjNDQ0MjE0NmYzYTFhMjI4MzkifV0sIl9fdiI6MCwiaWF0IjoxNzE5MjUzOTU2LCJleHAiOjE3MTkzNDAzNTZ9.5L-ywRBBGUegVLHRQhgu3jCzv1QFDj4sSbiknRVRup8",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"{{fullName}}\",\r\n    \"mail\": \"{{mail}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{password}}\",\r\n    \"accessProfile\": \"{{accessProfile}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login - sucess",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function firstName () {\r",
+									"    let firstName = [\"Salomão\", \"Jessica\", \"Lilia\", \"Roberta\", \"Taina\", \"Wagner\", \"Marcelo\", \"Renato\", \"Eronilson\", \"Geisy\", \"Felipe\", \"Ivan\", \"João\", \"Pedro\", \"Romero\", \"Cassio\", \"Emerson\", \"Guerrero\"];\r",
+									"\r",
+									"    let randomItem = firstName[Math.floor(Math.random() * firstName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"firstName\", firstName());\r",
+									"\r",
+									"\r",
+									"function lastName () {\r",
+									"    let lastName = [\"Almeida\", \"Nogueira\", \"Freitas\", \"Marinho\", \"Souza\", \"Sousa\", \"Silva\", \"Santos\", \"Carvalho\", \"Almeida Nogueira\", \"Marinho de Freitas\", \"Silva Santos\", \"Silva dos Santos\", \"Ramos\", \"Ramos da Silva\", \"Ribeiro\", \"Bitencourt\", \"Mercury\", \"de Souza\", \"da Silva\", \"de Freitas\", \"dos Santos\", \"de Carvalho\"];\r",
+									"\r",
+									"    let randomItem = lastName[Math.floor(Math.random() * lastName.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"lastName\", lastName());\r",
+									"\r",
+									"pm.environment.set(\"fullName\", pm.environment.get(\"firstName\") + \" \" + pm.environment.get(\"lastName\"));\r",
+									"\r",
+									"\r",
+									"\r",
+									"function accessProfile () {\r",
+									"    let accessProfile = [\"ADMIN\", \"FINANCEIRO\", \"ADMINISTRATIVO\", \"RH\", \"GERENCIA\", \"RECEBIMENTO\", \"TI\", \"INFRA\", \"DESENVOLVIMENTO\", \"QA\", \"CONTROLADORIA\"];\r",
+									"\r",
+									"    let randomItem = accessProfile[Math.floor(Math.random() * accessProfile.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"accessProfile\", accessProfile());\r",
+									"\r",
+									"\r",
+									"\r",
+									"function providerMail () {\r",
+									"    let providerMail = [\"@outlook.com\", \"@gmail.com\", \"@yahoo.com.br\", \"@uol.com.br\", \"@hotmail.com\",];\r",
+									"\r",
+									"    let randomItem = providerMail[Math.floor(Math.random() * providerMail.length)];\r",
+									"\r",
+									"    return randomItem\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"ProviderMail\", providerMail());\r",
+									"\r",
+									"pm.environment.set(\"mail\", pm.environment.get(\"firstName\") + \"_\" + pm.variables.replaceIn('{{$guid}}') + pm.environment.get(\"ProviderMail\"))"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is token exist\", function () {\r",
+									"     pm.expect(JSON.parse(responseBody).token).to.exist;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check is fullName true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"fullName\")).to.eql(JSON.parse(responseBody).user.fullName);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is mail true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"mail\")).to.eql(JSON.parse(responseBody).user.mail);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is accessProfile true\", function () {\r",
+									"    pm.expect(pm.environment.get(\"accessProfilemail\")).to.eql(JSON.parse(responseBody).user.accessProfilemail);\r",
+									"    \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check is status true\", function () {\r",
+									"    pm.expect(true).to.eql(JSON.parse(responseBody).user.status);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Njc5YmJjNDQ0MjE0NmYzYTFhMjI4MzgiLCJyZWdpc3RyYXRpb24iOiJRYUNvZGVycy0wMDAyNTY1MiIsImZ1bGxOYW1lIjoiSmVzc2ljYSBTb3V6YSIsIm1haWwiOiJKZXNzaWNhXzRlOGU4NGY2LTdjMTYtNDA3Ny04YzM2LWNhYjg2ZjNhOWE2ZUBob3RtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJDNZZnBSM1NUaFMzNUFoeWR3T3VsZ2VTR2J2THZWdUl4WkkvTHJBYWtrYmk1cHFuVjRMdjk2IiwiYWNjZXNzUHJvZmlsZSI6IkFETUlOIiwiaWRDb21wYW55IjoiIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0cmF0aW9uRGF0ZSI6Ik1vbiBKdW4gMjQgMjAyNCAxNTozMjozNiBHTVQtMDMwMCAoQnJhc2lsaWEgU3RhbmRhcmQgVGltZSkiLCJfaWQiOiI2Njc5YmJjNDQ0MjE0NmYzYTFhMjI4MzkifV0sIl9fdiI6MCwiaWF0IjoxNzE5MjUzOTU2LCJleHAiOjE3MTkzNDAzNTZ9.5L-ywRBBGUegVLHRQhgu3jCzv1QFDj4sSbiknRVRup8",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"{{fullName}}\",\r\n    \"mail\": \"{{mail}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"confirmPassword\": \"{{password}}\",\r\n    \"accessProfile\": \"{{accessProfile}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
